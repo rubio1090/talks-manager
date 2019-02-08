@@ -1,0 +1,47 @@
+.f-icon{
+  font-family: Helvetica, 'FontAwesome', sans-serif;
+  font-weight: 900;
+}
+.container-fluid{
+  padding-left: 0px;
+  padding-right: 0px;
+}
+.bg-light-grey{
+  background: #eef1f5;
+}
+.full-ht{
+  min-height: 100vh;
+}
+
+/* NAVIGATION */
+.nav-item{
+  border-bottom: 3px solid transparent;
+  transition: 200ms;
+  -webkit-transition: 200ms;
+}
+.nav-link{
+  color: #555555;
+}
+.nav-link:hover{
+  color: #37363f;
+}
+.nav-item:hover{
+  border-bottom: 3px solid #666699;
+}
+.navbar-brand{
+  font-size: 2em;
+  color: #204060;
+}
+
+/* PROFILE INFO */
+.section-header{
+  background: #79a6d2;
+  color: #ffffff;
+  font-size: 2em;
+}
+.info-title{
+  font-size: 1.5em;
+  font-weight: 500;
+  color: #555555;
+  border-bottom: 1px dotted #cccccc;
+}
