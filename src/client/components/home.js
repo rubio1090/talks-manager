@@ -22,7 +22,7 @@ export default class Home extends Component{
 
   displayDashboard=(usr)=>{
     return(
-      <div key={usr.CONG_ID} className="row bg-light pb-5">
+      <div key={usr.CONG_ID} className="ßrow bg-light pb-5">
         
         <div className="section-header col-12 pt-5 pb-2 pl-5">
           {`${usr.LAST_NAME}, ${usr.FIRST_NAME}`}
@@ -64,7 +64,7 @@ export default class Home extends Component{
         </div>
 
         <div className="col-12 my-3 pl-5">
-          <button className="btn btn-outline-primary py-2 px-3">Edit Info</button>
+          <button className="btn btn-outline-primary py-2 px-3"><i className="fa fa-edit"></i> Edit Info</button>
         </div>
         
       </div>
@@ -75,7 +75,7 @@ export default class Home extends Component{
     const {userInfo} = this.state;
     return(
       <div className="container-fluid">
-        <Nav/>
+        <Nav congId={userInfo.CONG_ID}/>
         <div className="container-fluid bg-light-grey full-ht">
           <div className="container p-1">
             <div className="row justify-content-center">

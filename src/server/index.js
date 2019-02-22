@@ -93,5 +93,17 @@ app.get('/api/talks', (req, res)=>{
   });
 });
 
+// GET TALKS BY CONG ID
+app.get('/api/cong/talks', (req, res)=>{
+  const sql = `CALL GetTalksByCong(${req.query.cong_id})`;
+  con.query(sql, (err, result)=>{
+    if(err){
+      return res.send(err);
+    }else{
+      return res.json({ data : result[0]})
+    }
+  });
+});
+
 //Start server
 app.listen(app.get('port'), () => console.log('From the server'));

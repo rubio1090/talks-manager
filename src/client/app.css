@@ -12,6 +12,9 @@
 .full-ht{
   min-height: 100vh;
 }
+.radius{
+  border-radius: 5px;
+}
 
 /* NAVIGATION */
 .nav-item{
@@ -21,6 +24,7 @@
 }
 .nav-link{
   color: #555555;
+  margin-top: auto;
 }
 .nav-link:hover{
   color: #37363f;
