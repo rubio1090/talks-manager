@@ -69,6 +69,18 @@ app.get('/api/user', (req, res) => {
   })
 });
 
+// GET CONG INFO
+app.get('/api/cong', (req, res) => {
+  const sql = `CALL GetCongInfo(${req.query.cong_id})`;
+  con.query(sql, (err, cong) => {
+    if(err){
+      return res.send(err);
+    }else{
+      return res.json({ data : cong[0] })
+    }
+  })
+});
+
 // GET SPEAKERS BY CONG_INFO
 app.get('/api/speakers', (req, res)=>{
   const sql = `CALL GetSpeakersByCongId(${req.query.cong_id})`;

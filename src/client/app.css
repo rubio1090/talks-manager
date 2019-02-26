@@ -1,3 +1,11 @@
+body{
+  /* font-family: 'Montserrat', sans-serif; */
+  font-family: 'Noto Sans JP', sans-serif;
+}
+.hr{
+  border-bottom: 1px solid #a0a0a0;
+}
+
 .f-icon{
   font-family: Helvetica, 'FontAwesome', sans-serif;
   font-weight: 900;
@@ -48,4 +56,15 @@
   font-weight: 500;
   color: #555555;
   border-bottom: 1px dotted #cccccc;
+}
+
+/* SPEAKERS */
+.card-body .h6{
+  color: #6d6d6d;
+}
+.active-speaker{
+  color: #29527a;
+}
+.inactive-speaker{
+  color: #555b61;
 }

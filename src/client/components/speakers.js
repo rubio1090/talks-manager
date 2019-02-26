@@ -6,6 +6,7 @@ export default class Speakers extends Component{
     super(props);
     this.state = {
       congId : 1,
+      congInfo : [],
       clickedSpeakerId : 1,
       selectedId : 1,
       speakers : [],
@@ -16,8 +17,9 @@ export default class Speakers extends Component{
 
   componentDidMount(){
     this.updateState();
-    this.getSpeakers();
-    this.getTalks();
+    this.waitForProps();
+    // this.getSpeakers();
+    // this.getTalks();
     this.checkWindowSize();
     window.addEventListener("resize", this.checkWindowSize);
   }
@@ -36,26 +38,37 @@ export default class Speakers extends Component{
     }
   }
 
-  getSpeakers=()=>{
+  waitForProps=()=>{
     var checkForId = setInterval(()=>{
       if(this.state.congId!==null){
-        fetch(`http://localhost:3030/api/speakers?cong_id=${this.state.congId}`)
-        .then(res => res.json())
-        .then(res => this.setState({ speakers : res.data }))
-        .then( clearInterval(checkForId) )
+        const {congId} = this.state;
+        this.getCongInfo(congId);
+        this.getSpeakers(congId);
+        this.getTalks(congId);
+        clearInterval(checkForId);
       }
     }, 200);
   }
+  getSpeakers=(congId)=>{
+    fetch(`http://localhost:3030/api/speakers?cong_id=${congId}`)
+      .then(res => res.json())
+      .then(res => this.setState({ speakers : res.data }))
+  }
 
-  getTalks=()=>{
-    var checkForId = setInterval(()=>{
-      if(this.state.congId!==null){
-        fetch(`http://localhost:3030/api/cong/talks?cong_id=${this.state.congId}`)
-        .then(res => res.json())
-        .then(res => this.setState({ talks : res.data }))
-        .then( clearInterval(checkForId) )
-      }
-    }, 200);
+  getTalks=(congId)=>{
+    fetch(`http://localhost:3030/api/cong/talks?cong_id=${congId}`)
+      .then(res => res.json())
+      .then(res => this.setState({ talks : res.data }))
+  }
+
+  getCongInfo=(congId)=>{
+    fetch(`http://localhost:3030/api/cong?cong_id=${congId}`)
+      .then(res => res.json())
+      .then(res => this.setState({ congInfo : res.data }))
+  }
+
+  handleSelection=(ev)=>{
+    this.setState({ selectedId : ev.target.value, clickedSpeakerId : Number(ev.target.value) });
   }
 
   setSpeakerId=(speakerId)=>{
@@ -65,17 +78,15 @@ export default class Speakers extends Component{
   renderSpeakers=(speaker)=>{
     return(
       <div key={speaker.ID} className="card" onClick={this.setSpeakerId.bind(this, speaker.ID)}>
-        <div className="card-body">
-          <p className="h4">{`${speaker.LAST_NAME}, ${speaker.FIRST_NAME}`}</p>
-          <p className="h5">{`${speaker.PRIVILEGE}`}</p>
-          <p className="h5">{`Available talks: ${speaker.TALKS}`}</p>
+        <div className="card-body py-1 px-3">
+          <p className={speaker.TALKS > 0 ? `active-speaker h5 font-weight-bold` : `inactive-speaker h5 font-weight-bold`}>
+            {`${speaker.LAST_NAME}, ${speaker.FIRST_NAME}`}
+          </p>
+          <p className="h6">{`${speaker.PRIVILEGE}`}</p>
+          <p className="h6">{`Available talks: ${speaker.TALKS}`}</p>
         </div>
       </div>
     )
-  }
-
-  handleSelection=(ev)=>{
-    this.setState({ selectedId : ev.target.value, clickedSpeakerId : Number(ev.target.value) });
   }
 
   renderSpeakerOptions=(speakers)=>{
@@ -96,34 +107,36 @@ export default class Speakers extends Component{
     if(talk.SPEAKER_ID === this.state.clickedSpeakerId){
       return(
         <div key={talk.TALK_NUMBER} className="card">
-          <div className="card-body">
+          <div className="card-body py-1">
             <p className="h5">{talk.TALK_TITLE}</p>
-            <p className="h6">{talk.TALK_NUMBER}</p>
+            <p className="h6">{`Talk number: `}{talk.TALK_NUMBER}</p>
           </div>
         </div>
       )
     }
-    
   }
+
   render(){
     
-    const {switchToMobile,speakers,talks} = this.state;
+    const {switchToMobile,speakers,talks,congInfo} = this.state;
     return(
       <div className="container-fluid">
       <Nav congId={this.state.congId}/>
-      <div className="container-fluid bg-light-grey py-3">
+      <div className="container-fluid bg-light-grey py-5">
         <div className="container">
+          {congInfo.map( c => (
+              <div key={c.CONG_ID} className="hr h2 pb-3">{c.CONG_NAME}</div>
+            ))} 
             <div className="row">
               
               <div className="col-lg-4">
-                <p className="h1">Speakers</p>
+                <p className="h4 text-uppercase my-0 py-3 pl-3">Speakers</p>
                 {switchToMobile ? this.renderSpeakerOptions(speakers) : speakers.map( speaker => this.renderSpeakers(speaker))}
               </div>
 
               <div className="col-lg-8">
-                <p className="h1">Available Talks</p>
-                {/* {talks.length > 0 ? talks.map( talk => this.renderTalks(talk) ) : null } */}
-                {talks.map( talk => this.renderTalks(talk) ) }
+                <p className="h4 text-uppercase my-0 py-3 pl-3">Available Talks</p>
+                {talks.map( talk => this.renderTalks(talk) )}
               </div>
 
             </div>
