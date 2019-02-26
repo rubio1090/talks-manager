@@ -103,6 +103,7 @@ export default class Speakers extends Component{
     )
   }
 
+  // Renders talks list
   renderTalks=(talk)=>{
     if(talk.SPEAKER_ID === this.state.clickedSpeakerId){
       return(
